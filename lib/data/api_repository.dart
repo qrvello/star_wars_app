@@ -1,7 +1,7 @@
 import 'package:http/http.dart';
 
 abstract class ApiRepository {
-  Future<Response> getCharacters();
+  Future<Response> requestApi(url);
 
   void submitReport();
 }

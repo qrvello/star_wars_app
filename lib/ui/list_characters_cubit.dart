@@ -13,11 +13,12 @@ class ListCharactersCubit extends Cubit<List<Character>> {
 
   Future<void> init() async {
     _characters.clear();
-    final response = await _apiRepository.getCharacters();
+    final response =
+        await _apiRepository.requestApi('https://swapi.dev/api/people/.json');
     final decodedData = json.decode(response.body);
 
     for (var item in decodedData['results']) {
-      final pelicula = Character.fromJson(item);
+      final Character pelicula = Character.fromJson(item);
       _characters.add(pelicula);
     }
     emit(_characters);

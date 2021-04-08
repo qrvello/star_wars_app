@@ -3,8 +3,8 @@ import 'package:http/http.dart';
 
 class ApiLocalImpl extends ApiRepository {
   @override
-  Future<Response> getCharacters() async {
-    final result = await get(Uri.parse('https://swapi.dev/api/people/.json'));
+  Future<Response> requestApi(url) async {
+    final result = await get(Uri.parse(url));
 
     return result;
   }

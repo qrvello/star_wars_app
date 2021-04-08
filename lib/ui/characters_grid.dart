@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:star_wars_app/domain/models/character.dart';
 
-import 'character_details.dart';
+import 'character_details_page.dart';
 import 'list_characters_cubit.dart';
 
 // ignore: must_be_immutable
@@ -15,25 +16,25 @@ class CharactersGrid extends StatelessWidget {
       create: (context) => ListCharactersCubit(context.read())..init(),
       child: BlocBuilder<ListCharactersCubit, List<Character>>(
         builder: (context, snapshot) {
-          if (snapshot != []) {
-            characters = snapshot;
-          }
-          return GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 1.5,
-            ),
-            itemCount: characters.length,
-            itemBuilder: (context, i) {
-              return Padding(
-                padding: EdgeInsets.all(7.0),
-                child: Container(
+          characters = snapshot;
+
+          return Expanded(
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 1.4,
+              ),
+              padding: EdgeInsets.only(bottom: 5, top: 70),
+              itemCount: characters.length,
+              itemBuilder: (context, i) {
+                return Container(
+                  margin: EdgeInsets.all(10.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     gradient: LinearGradient(
                       colors: [
-                        Color(0xff161A31).withOpacity(0.9),
-                        Color(0xff161A31).withOpacity(0.6),
+                        Color(0xff003049).withOpacity(0.9),
+                        Color(0xff003049).withOpacity(0.5),
                       ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
@@ -46,17 +47,20 @@ class CharactersGrid extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
+                      elevation: MaterialStateProperty.resolveWith((states) {
+                        if (states.contains(MaterialState.pressed)) {
+                          return 2;
+                        } else {
+                          return 5;
+                        }
+                      }),
                       padding: MaterialStateProperty.resolveWith(
                           (states) => EdgeInsets.zero),
                       backgroundColor: MaterialStateProperty.resolveWith(
                           (states) => Colors.transparent),
                     ),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CharacterDetails()),
-                      );
+                      Get.to(CharacterDetailsPage(), arguments: characters[i]);
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -64,27 +68,28 @@ class CharactersGrid extends StatelessWidget {
                       children: [
                         Text(
                           characters[i].name,
-                          style: TextStyle(color: Colors.white, fontSize: 18),
+                          style:
+                              TextStyle(color: Color(0xfffcbf49), fontSize: 18),
                         ),
                         SizedBox(height: 12),
                         Text(
-                          'Altura de ${characters[i].height} cm',
+                          'Altura de ${characters[i].height ?? ''} cm',
                           style: TextStyle(color: Colors.white),
                         ),
                         Text(
-                          'Peso de ${characters[i].mass} kg',
+                          'Peso de ${characters[i].mass ?? ''} kg',
                           style: TextStyle(color: Colors.white),
                         ),
                         Text(
-                          'Género ${characters[i].gender}',
+                          'Género ${characters[i].gender ?? ''}',
                           style: TextStyle(color: Colors.white),
                         ),
                       ],
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           );
         },
       ),

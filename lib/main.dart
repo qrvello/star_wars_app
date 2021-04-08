@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:star_wars_app/data/api_repository.dart';
 import 'package:star_wars_app/data/local/api_local_impl.dart';
@@ -15,14 +16,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return RepositoryProvider<ApiRepository>(
       create: (_) => ApiLocalImpl(),
-      child: MaterialApp(
+      child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
           brightness: Brightness.dark,
-          textTheme: GoogleFonts.notoSansTextTheme(
-            Theme.of(context).textTheme,
-          ),
+          textTheme: GoogleFonts.notoSansTextTheme(Theme.of(context).textTheme),
           primaryColor: Color(0xff355070),
           accentColor: Colors.blue,
           scaffoldBackgroundColor: Color(0xff355070).withOpacity(0.8),

@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:star_wars_app/data/api_repository.dart';
-import 'package:star_wars_app/data/local/api_local_impl.dart';
-import 'package:star_wars_app/ui/home_page.dart';
+import 'package:star_wars_app/domain/repositories/api_repository.dart';
+import 'package:star_wars_app/ui/home/home_page.dart';
+
+import 'data/repositories/api_repository_impl.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider<ApiRepository>(
-      create: (_) => ApiLocalImpl(),
+      create: (_) => ApiRepositoryImpl(),
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',

@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:basic_utils/basic_utils.dart';
+
 Character characterFromJson(String str) => Character.fromJson(json.decode(str));
 
 String characterToJson(Character data) => json.encode(data.toJson());
@@ -54,11 +56,16 @@ class Character {
         eyeColor: json["eye_color"],
         birthYear: json["birth_year"],
         gender: json["gender"],
-        homeworld: json["homeworld"],
-        films: List<dynamic>.from(json["films"].map((x) => x)),
-        species: List<dynamic>.from(json["species"].map((x) => x)),
-        vehicles: List<dynamic>.from(json["vehicles"].map((x) => x)),
-        starships: List<dynamic>.from(json["starships"].map((x) => x)),
+        // Convierte las URL en https
+        homeworld: StringUtils.addCharAtPosition(json["homeworld"], 's', 4),
+        films: List<String>.from(
+            json["films"].map((x) => StringUtils.addCharAtPosition(x, 's', 4))),
+        species: List<String>.from(json["species"]
+            .map((x) => StringUtils.addCharAtPosition(x, 's', 4))),
+        vehicles: List<String>.from(json["vehicles"]
+            .map((x) => StringUtils.addCharAtPosition(x, 's', 4))),
+        starships: List<String>.from(json["starships"]
+            .map((x) => StringUtils.addCharAtPosition(x, 's', 4))),
         created: DateTime.parse(json["created"]),
         edited: DateTime.parse(json["edited"]),
         url: json["url"],

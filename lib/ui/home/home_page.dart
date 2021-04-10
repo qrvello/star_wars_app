@@ -1,8 +1,10 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../buttom_nav_cubit.dart';
 import 'characters_grid.dart';
 
 // ignore: must_be_immutable
@@ -16,18 +18,23 @@ class HomePage extends StatelessWidget {
       extendBodyBehindAppBar: true,
       appBar: _appBar(),
       //drawer: _drawer(context),
-      body: Stack(
-        children: [
-          _background(),
-          CharactersGrid(),
-          _bottomNavigationBar(),
-        ],
+      body: BlocProvider(
+        create: (context) => BottomNavCubit(),
+        child: BlocBuilder<BottomNavCubit, int>(
+          builder: (BuildContext context, int index) => Stack(
+            children: [
+              _background(),
+              CharactersGrid(index: index),
+              _bottomNavigationBar(context, index),
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  // ignore: unused_element
-  Positioned _bottomNavigationBar() {
+  // ignore: unused_element_
+  Positioned _bottomNavigationBar(BuildContext context, int index) {
     return Positioned(
       left: 5,
       right: 5,
@@ -46,14 +53,14 @@ class HomePage extends StatelessWidget {
               label: 'Offline',
             ),
           ],
+          currentIndex: index,
           onTap: (int value) {
             switch (value) {
               case 0:
-                online = true;
+                context.read<BottomNavCubit>().updateIndex(0);
                 break;
-
               case 1:
-                online = false;
+                context.read<BottomNavCubit>().updateIndex(1);
                 break;
             }
           },
@@ -65,47 +72,50 @@ class HomePage extends StatelessWidget {
   AppBar _appBar() {
     return AppBar(
       centerTitle: true,
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            'Lista de personajes',
-            style: GoogleFonts.openSans(
-              color: Color(0xfffcbf49),
-            ),
-          ),
-          Text('Página 1'),
-        ],
+      title: Text(
+        'Lista de personajes',
+        style: GoogleFonts.openSans(
+            color: Color(0xfffcbf49), fontWeight: FontWeight.w700),
       ),
-      flexibleSpace: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xff003049).withOpacity(0.9),
-              Color(0xff223049).withOpacity(0.5),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-      ),
-      //backgroundColor: Colors.transparent,
-      //shadowColor: Colors.transparent,
+
+      //flexibleSpace: Container(
+      //  decoration: BoxDecoration(
+      //    gradient: LinearGradient(
+      //      colors: [
+      //        Color(0xff003049).withOpacity(0.9),
+      //        Color(0xff223049).withOpacity(0.5),
+      //      ],
+      //      begin: Alignment.topLeft,
+      //      end: Alignment.bottomRight,
+      //    ),
+      //  ),
+      //),
+      backgroundColor: Colors.transparent,
+      shadowColor: Colors.transparent,
     );
   }
 
   Container _background() {
     return Container(
+      //color: Color(0xff252a48),
       decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/background.jpg'),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
-        child: Container(),
-      ),
+          gradient: LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          Color(0xff252a48),
+          Color(0xff252a48).withOpacity(0.8),
+        ],
+      )),
+      //  image: DecorationImage(
+      //    image: AssetImage('assets/background.jpg'),
+      //    fit: BoxFit.cover,
+      //  ),
+      //),
+      //child: BackdropFilter(
+      //  filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+      //  child: Container(),
+      //),
     );
   }
 

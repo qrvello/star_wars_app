@@ -36,11 +36,11 @@ class Character {
   String eyeColor;
   String birthYear;
   String gender;
-  String homeworld;
-  List<String> films;
+  dynamic homeworld;
+  List<dynamic> films;
   List<dynamic> species;
-  List<String> vehicles;
-  List<String> starships;
+  List<dynamic> vehicles;
+  List<dynamic> starships;
   DateTime created;
   DateTime edited;
   String url;
@@ -55,10 +55,10 @@ class Character {
         birthYear: json["birth_year"],
         gender: json["gender"],
         homeworld: json["homeworld"],
-        films: List<String>.from(json["films"].map((x) => x)),
+        films: List<dynamic>.from(json["films"].map((x) => x)),
         species: List<dynamic>.from(json["species"].map((x) => x)),
-        vehicles: List<String>.from(json["vehicles"].map((x) => x)),
-        starships: List<String>.from(json["starships"].map((x) => x)),
+        vehicles: List<dynamic>.from(json["vehicles"].map((x) => x)),
+        starships: List<dynamic>.from(json["starships"].map((x) => x)),
         created: DateTime.parse(json["created"]),
         edited: DateTime.parse(json["edited"]),
         url: json["url"],

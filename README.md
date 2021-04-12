@@ -1,6 +1,6 @@
 # star_wars_app
 
-A new Flutter project.
+Aplicación de Star Wars hecha con flutter.
 
 ## Getting Started
 

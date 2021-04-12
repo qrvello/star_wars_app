@@ -5,11 +5,14 @@
 import 'dart:convert';
 
 import 'package:basic_utils/basic_utils.dart';
+import 'package:hive/hive.dart';
+part 'character.g.dart';
 
 Character characterFromJson(String str) => Character.fromJson(json.decode(str));
 
 String characterToJson(Character data) => json.encode(data.toJson());
 
+@HiveType(typeId: 1)
 class Character {
   Character({
     this.name,
@@ -30,21 +33,52 @@ class Character {
     this.url,
   });
 
+  @HiveField(0)
   String name;
+
+  @HiveField(1)
   String height;
+
+  @HiveField(2)
   String mass;
+
+  @HiveField(3)
   String hairColor;
+
+  @HiveField(4)
   String skinColor;
+
+  @HiveField(5)
   String eyeColor;
+
+  @HiveField(6)
   String birthYear;
+
+  @HiveField(7)
   String gender;
+
+  @HiveField(8)
   dynamic homeworld;
+
+  @HiveField(9)
   List<dynamic> films;
+
+  @HiveField(10)
   List<dynamic> species;
+
+  @HiveField(11)
   List<dynamic> vehicles;
+
+  @HiveField(12)
   List<dynamic> starships;
+
+  @HiveField(13)
   DateTime created;
+
+  @HiveField(14)
   DateTime edited;
+
+  @HiveField(15)
   String url;
 
   factory Character.fromJson(Map<String, dynamic> json) => Character(
@@ -68,7 +102,7 @@ class Character {
             .map((x) => StringUtils.addCharAtPosition(x, 's', 4))),
         created: DateTime.parse(json["created"]),
         edited: DateTime.parse(json["edited"]),
-        url: json["url"],
+        url: StringUtils.addCharAtPosition(json["url"], 's', 4),
       );
 
   Map<String, dynamic> toJson() => {

@@ -1,17 +1,12 @@
-import 'package:equatable/equatable.dart';
 import 'package:star_wars_app/domain/models/character.dart';
 
 abstract class ListCharactersState {
-  const ListCharactersState();
+  ListCharactersState();
 }
 
-class ListCharactersInitial extends ListCharactersState {
-  const ListCharactersInitial();
-}
+class ListCharactersInitial extends ListCharactersState {}
 
-class ListCharactersLoading extends ListCharactersState {
-  const ListCharactersLoading();
-}
+class ListCharactersLoading extends ListCharactersState {}
 
 class ListCharactersError extends ListCharactersState {
   final String message;
@@ -19,9 +14,8 @@ class ListCharactersError extends ListCharactersState {
 }
 
 class ListCharactersLoaded extends ListCharactersState {
-  const ListCharactersLoaded(this.characters, this.nextUrl, this.previousUrl);
+  ListCharactersLoaded(this.characters, {this.nextUrl, this.previousUrl});
   final List<Character> characters;
   final String previousUrl;
   final String nextUrl;
-  List<Object> get props => [characters, previousUrl, nextUrl];
 }

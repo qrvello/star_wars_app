@@ -3,9 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../buttom_nav_cubit.dart';
-import 'characters_grid.dart';
+import '../../domain/cubits/buttom_nav_cubit.dart';
+import '../characters_grid/characters_grid.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatelessWidget {
@@ -15,40 +14,46 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       //extendBody: true,
-      extendBodyBehindAppBar: true,
+      //extendBodyBehindAppBar: true,
       appBar: _appBar(),
       //drawer: _drawer(context),
       body: BlocProvider(
         create: (context) => BottomNavCubit(),
         child: BlocBuilder<BottomNavCubit, int>(
-          builder: (BuildContext context, int index) => Stack(
-            children: [
-              _background(),
-              CharactersGrid(index: index),
-              _bottomNavigationBar(context, index),
-            ],
-          ),
+          builder: (BuildContext context, int index) {
+            return Stack(
+              children: [
+                _background(),
+                CharactersGrid(),
+                _bottomNavigationBar(context, index),
+              ],
+            );
+          },
         ),
       ),
     );
   }
 
-  // ignore: unused_element_
   Positioned _bottomNavigationBar(BuildContext context, int index) {
     return Positioned(
       left: 5,
       right: 5,
       bottom: 5,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(40),
+        borderRadius: BorderRadius.circular(20),
         child: BottomNavigationBar(
+          unselectedItemColor: Colors.grey,
+          selectedItemColor: Color(0xfffcbf49),
           backgroundColor: Colors.white,
           items: [
             BottomNavigationBarItem(
+              tooltip: 'Encuentra los personajes a través de internet',
               icon: Icon(Icons.cloud),
               label: 'Online',
             ),
             BottomNavigationBarItem(
+              tooltip:
+                  'Encuentra los personajes que están guardados localmente en tu celular',
               icon: Icon(Icons.cloud_off),
               label: 'Offline',
             ),
@@ -77,21 +82,7 @@ class HomePage extends StatelessWidget {
         style: GoogleFonts.openSans(
             color: Color(0xfffcbf49), fontWeight: FontWeight.w700),
       ),
-
-      //flexibleSpace: Container(
-      //  decoration: BoxDecoration(
-      //    gradient: LinearGradient(
-      //      colors: [
-      //        Color(0xff003049).withOpacity(0.9),
-      //        Color(0xff223049).withOpacity(0.5),
-      //      ],
-      //      begin: Alignment.topLeft,
-      //      end: Alignment.bottomRight,
-      //    ),
-      //  ),
-      //),
-      backgroundColor: Colors.transparent,
-      shadowColor: Colors.transparent,
+      backgroundColor: Color(0xff252a48),
     );
   }
 
@@ -104,7 +95,7 @@ class HomePage extends StatelessWidget {
         end: Alignment.bottomCenter,
         colors: [
           Color(0xff252a48),
-          Color(0xff252a48).withOpacity(0.8),
+          Color(0xff252a48).withOpacity(0.9),
         ],
       )),
       //  image: DecorationImage(

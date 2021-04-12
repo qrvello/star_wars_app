@@ -1,14 +1,12 @@
-import 'package:star_wars_app/domain/models/planet.dart';
-import 'package:star_wars_app/domain/models/starship.dart';
-import 'package:star_wars_app/domain/models/vehicle.dart';
+import 'package:star_wars_app/domain/models/character.dart';
 
 abstract class CharacterDetailsState {
-  const CharacterDetailsState();
+  CharacterDetailsState();
 }
 
-class CharacterDetailsInitial extends CharacterDetailsState {
-  const CharacterDetailsInitial();
-}
+class CharacterDetailsInitial extends CharacterDetailsState {}
+
+class CharacterDetailsLoading extends CharacterDetailsState {}
 
 class CharacterDetailsError extends CharacterDetailsState {
   final String message;
@@ -17,8 +15,7 @@ class CharacterDetailsError extends CharacterDetailsState {
 }
 
 class CharacterDetailsLoaded extends CharacterDetailsState {
-  CharacterDetailsLoaded(this.homeworld, this.starships, this.vehicles);
-  final List<Starship> starships;
-  final List<Vehicle> vehicles;
-  final Planet homeworld;
+  final Character character;
+
+  CharacterDetailsLoaded(this.character);
 }

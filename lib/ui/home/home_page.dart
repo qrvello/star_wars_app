@@ -13,8 +13,6 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //extendBody: true,
-      //extendBodyBehindAppBar: true,
       appBar: _appBar(),
       //drawer: _drawer(context),
       body: BlocProvider(

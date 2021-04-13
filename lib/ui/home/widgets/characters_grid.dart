@@ -8,11 +8,12 @@ import 'package:star_wars_app/domain/cubits/list_charactes_cubit/list_characters
 import 'package:star_wars_app/domain/repositories/api_repository.dart';
 import 'package:star_wars_app/domain/repositories/database_repository.dart';
 
-import '../character_details/character_details_page.dart';
+import '../../character_details/character_details_page.dart';
 
 // ignore: must_be_immutable
 class CharactersGrid extends StatelessWidget {
   bool online;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BottomNavCubit, int>(
@@ -22,88 +23,92 @@ class CharactersGrid extends StatelessWidget {
         } else {
           online = false;
         }
+
         if (online == true) {
           // Modo online
-          //
-          //
-          //
-          return BlocProvider(
-            create: (context) => ListCharactersOnlineCubit(
-                context.read<ApiRepository>(),
-                context.read<DatabaseRepository>())
-              ..init(),
-            child: BlocBuilder<ListCharactersOnlineCubit, ListCharactersState>(
-              builder: (context, state) {
-                // Está cargando
-                if (state is ListCharactersLoading) {
-                  return buildLoading(context);
-                }
-                // Terminó de cargar
-                if (state is ListCharactersLoaded) {
-                  return Column(
-                    children: [
-                      _charactersGridView(context, state),
-                      _paginateButtons(context, state),
-                    ],
-                  );
-                }
 
-                // Error
-                if (state is ListCharactersError) {
-                  return buildError(state);
-                }
-
-                return Container();
-              },
-            ),
-          );
+          return buildGridOnline();
         } else {
           // Modo offline
-          //
-          //
 
-          return BlocProvider(
-            create: (context) =>
-                ListCharactersOfflineCubit(context.read<DatabaseRepository>())
-                  ..init(),
-            child: BlocBuilder<ListCharactersOfflineCubit, ListCharactersState>(
-              builder: (context, state) {
-                // Terminó de cargar
-                if (state is ListCharactersLoaded) {
-                  return Container(
-                    margin: EdgeInsets.only(bottom: 70),
-                    child: Column(
-                      children: [
-                        _charactersGridView(context, state),
-                      ],
-                    ),
-                  );
-                }
-
-                // Error
-                if (state is ListCharactersError) {
-                  return buildError(state);
-                }
-
-                return buildLoading(context);
-              },
-            ),
-          );
+          return buildGridOffline();
         }
       },
     );
   }
 
-  Center buildLoading(BuildContext context) {
-    return Center(
-      child: CircularProgressIndicator(
-        strokeWidth: 2,
-        valueColor: new AlwaysStoppedAnimation<Color>(Colors.yellow),
+  BlocProvider<ListCharactersOnlineCubit> buildGridOnline() {
+    return BlocProvider(
+      create: (context) => ListCharactersOnlineCubit(
+          context.read<ApiRepository>(), context.read<DatabaseRepository>())
+        ..init(),
+      child: BlocBuilder<ListCharactersOnlineCubit, ListCharactersState>(
+        builder: (context, state) {
+          // Está cargando
+          if (state is ListCharactersLoading) {
+            return _buildLoading(context);
+          }
+          // Terminó de cargar
+          if (state is ListCharactersLoaded) {
+            return Column(
+              children: [
+                _charactersGridView(context, state),
+                _paginateButtons(context, state),
+              ],
+            );
+          }
+
+          // Error
+          if (state is ListCharactersError) {
+            return _buildError(state);
+          }
+
+          return Container();
+        },
       ),
     );
   }
 
-  Widget buildError(ListCharactersError error) {
+  BlocProvider<ListCharactersOfflineCubit> buildGridOffline() {
+    return BlocProvider(
+      create: (context) =>
+          ListCharactersOfflineCubit(context.read<DatabaseRepository>())
+            ..init(),
+      child: BlocBuilder<ListCharactersOfflineCubit, ListCharactersState>(
+        builder: (context, state) {
+          // Terminó de cargar
+          if (state is ListCharactersLoaded) {
+            return Container(
+              margin: EdgeInsets.only(bottom: 70),
+              child: Column(
+                children: [
+                  _charactersGridView(context, state),
+                ],
+              ),
+            );
+          }
+
+          // Error
+          if (state is ListCharactersError) {
+            return _buildError(state);
+          }
+
+          return _buildLoading(context);
+        },
+      ),
+    );
+  }
+
+  Center _buildLoading(BuildContext context) {
+    return Center(
+      child: CircularProgressIndicator(
+        strokeWidth: 2,
+        valueColor: new AlwaysStoppedAnimation<Color>(Color(0xfffcbf49)),
+      ),
+    );
+  }
+
+  Widget _buildError(ListCharactersError error) {
     return Center(
       child: Column(
         children: [
@@ -121,7 +126,7 @@ class CharactersGrid extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
             child: Text(
               error.message,
-              style: TextStyle(color: Colors.white, fontSize: 20),
+              style: TextStyle(fontSize: 20),
             ),
           ),
         ],

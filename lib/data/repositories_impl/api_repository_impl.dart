@@ -66,7 +66,21 @@ class ApiRepositoryImpl extends ApiRepository {
   }
 
   @override
-  void submitReport() {
-    // TODO: implement submitReport
+  Future<void> submitReport(Character character) async {
+    try {
+      final String url = 'https://jsonplaceholder.typicode.com/posts';
+
+      var request = http.MultipartRequest('POST', Uri.parse(url));
+
+      request.fields.addAll({
+        'userId': '1',
+        'dateTime': 'rgergegr',
+        'character_name': 'Luke Skywalker'
+      });
+
+      await request.send();
+    } on SocketException {
+      throw SocketException;
+    }
   }
 }

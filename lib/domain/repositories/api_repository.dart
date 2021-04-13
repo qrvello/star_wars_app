@@ -5,5 +5,5 @@ abstract class ApiRepository {
 
   Future<Character> getCharacterDetails(Character character);
 
-  void submitReport();
+  Future<void> submitReport(Character character);
 }

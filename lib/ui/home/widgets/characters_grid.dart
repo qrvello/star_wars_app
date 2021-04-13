@@ -26,11 +26,9 @@ class CharactersGrid extends StatelessWidget {
 
         if (online == true) {
           // Modo online
-
           return buildGridOnline();
         } else {
           // Modo offline
-
           return buildGridOffline();
         }
       },
@@ -52,7 +50,9 @@ class CharactersGrid extends StatelessWidget {
           if (state is ListCharactersLoaded) {
             return Column(
               children: [
-                _charactersGridView(context, state),
+                SingleChildScrollView(
+                  child: _charactersGridView(context, state),
+                ),
                 _paginateButtons(context, state),
               ],
             );
@@ -80,10 +80,12 @@ class CharactersGrid extends StatelessWidget {
           if (state is ListCharactersLoaded) {
             return Container(
               margin: EdgeInsets.only(bottom: 70),
-              child: Column(
-                children: [
-                  _charactersGridView(context, state),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    _charactersGridView(context, state),
+                  ],
+                ),
               ),
             );
           }
@@ -109,15 +111,16 @@ class CharactersGrid extends StatelessWidget {
   }
 
   Widget _buildError(ListCharactersError error) {
-    return Center(
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 50),
       child: Column(
         children: [
           Icon(
             Icons.error_outline_rounded,
             color: Color(0xffE45D68),
-            size: 40,
+            size: 34,
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 16),
           Container(
             decoration: BoxDecoration(
               color: Color(0xffE45D68),
@@ -126,7 +129,7 @@ class CharactersGrid extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
             child: Text(
               error.message,
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(color: Colors.white, fontSize: 16),
             ),
           ),
         ],
@@ -134,83 +137,81 @@ class CharactersGrid extends StatelessWidget {
     );
   }
 
-  Expanded _charactersGridView(
-      BuildContext context, ListCharactersLoaded state) {
-    return Expanded(
-      child: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: (MediaQuery.of(context).size.width > 1900) ? 3 : 2,
-          crossAxisSpacing: MediaQuery.of(context).size.width * 0.01,
-          childAspectRatio:
-              (MediaQuery.of(context).size.height > 1200) ? 2.5 : 1.7,
-        ),
-        itemCount: state.characters.length,
-        itemBuilder: (context, i) {
-          return Container(
-            margin: EdgeInsets.all(6.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              gradient: LinearGradient(
-                colors: [
-                  Colors.white.withOpacity(0.07),
-                  Colors.white.withOpacity(0.3),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-            ),
-            child: ElevatedButton(
-              style: ButtonStyle(
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  elevation: MaterialStateProperty.resolveWith((states) =>
-                      (states.contains(MaterialState.pressed) ? 2 : 5)),
-                  padding: MaterialStateProperty.all(EdgeInsets.zero),
-                  backgroundColor:
-                      MaterialStateProperty.all(Colors.transparent),
-                  shadowColor: MaterialStateProperty.all(Colors.transparent)),
-              onPressed: () {
-                Get.to(() => CharacterDetailsPage(), arguments: {
-                  'character': state.characters[i],
-                  'online': online
-                });
-              },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    state.characters[i].name,
-                    style: TextStyle(color: Color(0xfffcbf49), fontSize: 18),
-                  ),
-                  SizedBox(height: 12),
-                  Text(
-                    'Altura de ${state.characters[i].height} cm',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  Text(
-                    'Peso de ${state.characters[i].mass} kg',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  Text(
-                    'Género ${state.characters[i].gender}',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
+  Widget _charactersGridView(BuildContext context, ListCharactersLoaded state) {
+    return GridView.builder(
+      physics: ScrollPhysics(),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: (MediaQuery.of(context).size.width > 1900) ? 3 : 2,
+        crossAxisSpacing: MediaQuery.of(context).size.width * 0.01,
+        childAspectRatio:
+            (MediaQuery.of(context).size.height > 1200) ? 2.5 : 1.7,
       ),
+      shrinkWrap: true,
+      itemCount: state.characters.length,
+      itemBuilder: (context, i) {
+        return Container(
+          margin: EdgeInsets.all(6.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            gradient: LinearGradient(
+              colors: [
+                Colors.white.withOpacity(0.07),
+                Colors.white.withOpacity(0.3),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          child: ElevatedButton(
+            style: ButtonStyle(
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                elevation: MaterialStateProperty.resolveWith((states) =>
+                    (states.contains(MaterialState.pressed) ? 2 : 5)),
+                padding: MaterialStateProperty.all(EdgeInsets.zero),
+                backgroundColor: MaterialStateProperty.all(Colors.transparent),
+                shadowColor: MaterialStateProperty.all(Colors.transparent)),
+            onPressed: () {
+              Get.to(() => CharacterDetailsPage(), arguments: {
+                'character': state.characters[i],
+                'online': online
+              });
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  state.characters[i].name,
+                  style: TextStyle(color: Color(0xfffcbf49), fontSize: 18),
+                ),
+                SizedBox(height: 12),
+                Text(
+                  'Altura de ${state.characters[i].height} cm',
+                  style: TextStyle(color: Colors.white),
+                ),
+                Text(
+                  'Peso de ${state.characters[i].mass} kg',
+                  style: TextStyle(color: Colors.white),
+                ),
+                Text(
+                  'Género ${state.characters[i].gender}',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
   Container _paginateButtons(BuildContext context, ListCharactersLoaded state) {
     return Container(
-      padding: EdgeInsets.only(bottom: 68),
+      padding: EdgeInsets.only(top: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [

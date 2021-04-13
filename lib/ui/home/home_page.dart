@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../domain/cubits/buttom_nav_cubit.dart';
-import '../characters_grid/characters_grid.dart';
+import 'widgets/characters_grid.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatelessWidget {

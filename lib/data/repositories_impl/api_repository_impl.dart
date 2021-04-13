@@ -25,34 +25,42 @@ class ApiRepositoryImpl extends ApiRepository {
     List<Starship> starships = [];
     List<Vehicle> vehicles = [];
 
-    for (String url in character.starships) {
-      try {
-        final response = await http.get(Uri.parse(url));
+    character.starships.forEach((_starship) async {
+      if (_starship is String) {
+        try {
+          final response = await http.get(Uri.parse(_starship));
 
-        Starship starship = starshipFromJson(response.body);
+          Starship starship = starshipFromJson(response.body);
 
-        starships.add(starship);
-      } on SocketException {
-        throw SocketException;
+          starships.add(starship);
+        } on SocketException {
+          throw SocketException;
+        }
+      } else if (_starship is Starship) {
+        starships.add(_starship);
       }
+    });
 
-      character.starships = starships;
-    }
+    character.starships = starships;
 
-    for (String url in character.vehicles) {
-      try {
-        final response = await http.get(Uri.parse(url));
+    character.vehicles.forEach((_vehicle) async {
+      if (_vehicle is String) {
+        try {
+          final response = await http.get(Uri.parse(_vehicle));
 
-        Vehicle vehicle = vehicleFromJson(response.body);
+          Vehicle vehicle = vehicleFromJson(response.body);
 
-        vehicles.add(vehicle);
-      } on SocketException {
-        throw SocketException;
+          vehicles.add(vehicle);
+        } on SocketException {
+          throw SocketException;
+        }
+      } else if (_vehicle is Vehicle) {
+        vehicles.add(_vehicle);
       }
       character.vehicles = vehicles;
-    }
+    });
 
-    if (character.homeworld != null) {
+    if (character.homeworld is String) {
       try {
         final response = await http.get(Uri.parse(character.homeworld));
 

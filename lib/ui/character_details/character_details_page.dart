@@ -330,15 +330,16 @@ class CharacterDetailsPage extends StatelessWidget {
   }
 
   Widget _buildError(CharacterDetailsError error) {
-    return Center(
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 50),
       child: Column(
         children: [
           Icon(
             Icons.error_outline_rounded,
             color: Color(0xffE45D68),
-            size: 40,
+            size: 34,
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 16),
           Container(
             decoration: BoxDecoration(
               color: Color(0xffE45D68),
@@ -347,7 +348,7 @@ class CharacterDetailsPage extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
             child: Text(
               error.message,
-              style: TextStyle(color: Colors.white, fontSize: 20),
+              style: TextStyle(color: Colors.white, fontSize: 16),
             ),
           ),
         ],

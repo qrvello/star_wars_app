@@ -10,4 +10,9 @@ final ThemeData theme = ThemeData(
   primaryColor: Color(0xff355070),
   accentColor: Colors.blue,
   scaffoldBackgroundColor: Color(0xff252a48),
+  appBarTheme: AppBarTheme(
+    centerTitle: true,
+    textTheme: GoogleFonts.notoSansTextTheme(TextTheme().apply()),
+    backgroundColor: Color(0xff293241),
+  ),
 );

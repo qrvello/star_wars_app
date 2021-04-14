@@ -9,6 +9,10 @@ import 'package:star_wars_app/domain/repositories/api_repository.dart';
 
 class ApiRepositoryImpl extends ApiRepository {
   @override
+  //
+  // Se encarga de realizar la peticion a la url que se le envía
+  // por parámetro
+  //
   Future<Map<String, dynamic>> getCharacters(url) async {
     try {
       final http.Response response = await http.get(Uri.parse(url));
@@ -21,45 +25,70 @@ class ApiRepositoryImpl extends ApiRepository {
     }
   }
 
+  //
+  // Se encarga de realizar las peticiones a las url de los vehiculos, naves,
+  // y del planeta proveniente del personaje.
+  //
   Future<Character> getCharacterDetails(Character character) async {
     List<Starship> starships = [];
     List<Vehicle> vehicles = [];
 
-    character.starships.forEach((_starship) async {
-      if (_starship is String) {
+    //
+    // Se recorre las naves del personaje
+
+    for (var starship in character.starships) {
+      // Si es string se hace la petición de tipo GET
+      if (starship is String) {
         try {
-          final response = await http.get(Uri.parse(_starship));
+          final response = await http.get(Uri.parse(starship));
 
-          Starship starship = starshipFromJson(response.body);
+          // La respuesta se convierte a un objeto del tipo Starship
+          Starship _starship = starshipFromJson(response.body);
 
-          starships.add(starship);
+          // Se agrega el objeto a la lista starships
+          starships.add(_starship);
         } on SocketException {
           throw SocketException;
         }
-      } else if (_starship is Starship) {
-        starships.add(_starship);
       }
-    });
+    }
 
-    character.starships = starships;
+    // Si la lista de starships contiene informacion
+    // se remplazara la lista de naves del personaje por ésta
 
-    character.vehicles.forEach((_vehicle) async {
-      if (_vehicle is String) {
+    if (starships.length > 0) {
+      character.starships = List.from(starships);
+    }
+
+    //
+    // Se recorren los vehiculos del personaje
+
+    for (var vehicle in character.vehicles) {
+      // Si es string se hace la petición de tipo GET
+      if (vehicle is String) {
         try {
-          final response = await http.get(Uri.parse(_vehicle));
+          final response = await http.get(Uri.parse(vehicle));
 
-          Vehicle vehicle = vehicleFromJson(response.body);
+          // La respuesta se convierte a un objeto del tipo Vehicle
+          Vehicle _vehicle = vehicleFromJson(response.body);
 
-          vehicles.add(vehicle);
+          // Se agrega el objeto a la lista vehicles
+          vehicles.add(_vehicle);
         } on SocketException {
           throw SocketException;
         }
-      } else if (_vehicle is Vehicle) {
-        vehicles.add(_vehicle);
       }
-      character.vehicles = vehicles;
-    });
+    }
 
+    // Si la lista de vehicles contiene informacion
+    // se remplazara la lista de vehiculos del personaje por ésta
+
+    if (vehicles.length > 0) {
+      character.vehicles = List.from(vehicles);
+    }
+
+    //
+    // Si el homeworld del personaje es de tipo String se realiza la petición
     if (character.homeworld is String) {
       try {
         final response = await http.get(Uri.parse(character.homeworld));
@@ -73,6 +102,9 @@ class ApiRepositoryImpl extends ApiRepository {
     return character;
   }
 
+  //
+  // Se encarga de enviar el reporte de avistamiento
+  //
   @override
   Future<void> submitReport(Character character) async {
     try {
@@ -82,8 +114,8 @@ class ApiRepositoryImpl extends ApiRepository {
 
       request.fields.addAll({
         'userId': '1',
-        'dateTime': 'rgergegr',
-        'character_name': 'Luke Skywalker'
+        'dateTime': character.created.toString(),
+        'character_name': character.name
       });
 
       await request.send();

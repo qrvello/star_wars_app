@@ -23,32 +23,47 @@ class DatabaseRepositoryImpl extends DatabaseRepository {
     List<Starship> _starships = [];
     List<Vehicle> _vehicles = [];
 
+    //
+    // Se recorren las naves del personaje
+
     character.starships.forEach((starship) {
+      // Si es string entonces se busca en la base de datos
       if (starship is String) {
         Starship _starship = starshipsBox.get(starship);
         _starships.add(_starship);
-      } else if (starship is Starship) {
-        _starships.add(starship);
       }
     });
 
-    character.starships = List.from(_starships);
+    // Se remplazan las naves del personaje por la lista de naves si ésta
+    // contiene datos
+    if (_starships.length > 0) {
+      character.starships = List.from(_starships);
+    }
+
+    //
+    // Se recorren los vehiculos del personaje
 
     character.vehicles.forEach((vehicle) {
       if (vehicle is String) {
         Vehicle _vehicle = vehiclesBox.get(vehicle);
         _vehicles.add(_vehicle);
-      } else if (vehicle is Vehicle) {
-        _vehicles.add(vehicle);
       }
     });
 
-    character.vehicles = List.from(_vehicles);
+    // Se remplazan los vehiculos del personaje por la lista de vehiculos si ésta
+    // contiene datos
+    if (_vehicles.length > 0) {
+      character.vehicles = List.from(_vehicles);
+    }
 
+    //
+    // Si el homeworld del personaje es un String se busca en la base de datos
+    // y se remplaza
     if (character.homeworld is String) {
       Planet homeworld = planetsBox.get(character.homeworld);
       character.homeworld = homeworld;
     }
+
     return character;
   }
 

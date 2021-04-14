@@ -89,7 +89,7 @@ class GridViewWidget extends StatelessWidget {
                     style: TextStyle(color: Colors.white),
                   )
                 : SizedBox.shrink(),
-            (character.gender != 'unknown')
+            (character.gender != 'n/a')
                 ? Text(
                     'Género ${character.gender}',
                     style: TextStyle(color: Colors.white),

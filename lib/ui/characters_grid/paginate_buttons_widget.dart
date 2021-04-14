@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:star_wars_app/domain/cubits/bottom_nav_bar_cubit.dart';
 import 'package:star_wars_app/domain/cubits/list_charactes_cubit/list_characters_online_cubit.dart';
 import 'package:star_wars_app/domain/cubits/list_charactes_cubit/list_characters_state.dart';
 

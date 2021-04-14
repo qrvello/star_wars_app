@@ -11,7 +11,6 @@ import 'package:star_wars_app/domain/repositories/database_repository.dart';
 import 'package:star_wars_app/ui/character_details/widgets/initial_data_widget.dart';
 import 'package:star_wars_app/ui/character_details/widgets/loaded_data_widget.dart';
 import 'package:star_wars_app/ui/character_details/widgets/report_button_widget.dart';
-import 'package:star_wars_app/ui/character_details/widgets/snackbars.dart';
 import 'package:star_wars_app/ui/widgets/custom_error_widget.dart';
 import 'package:star_wars_app/ui/widgets/loading_widget.dart';
 

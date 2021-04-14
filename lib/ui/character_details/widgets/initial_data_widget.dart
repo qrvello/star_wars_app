@@ -12,11 +12,13 @@ class InitialDataWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        (character.hairColor != ("n\a"))
+        (character.hairColor != ("n/a"))
             ? CardWidget('Color de cabello', trailing: character.hairColor)
-            : null,
+            : SizedBox.shrink(),
         CardWidget('Color de ojos', trailing: character.eyeColor),
-        CardWidget('Color de piel', trailing: character.skinColor),
+        (character.hairColor != ("unknown"))
+            ? CardWidget('Color de piel', trailing: character.skinColor)
+            : SizedBox.shrink(),
       ],
     );
   }

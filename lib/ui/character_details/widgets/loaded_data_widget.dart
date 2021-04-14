@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:star_wars_app/domain/cubits/character_details_cubit/character_details_state.dart';
+import 'package:star_wars_app/domain/models/planet.dart';
 import 'package:star_wars_app/domain/models/starship.dart';
 import 'package:star_wars_app/domain/models/vehicle.dart';
 
@@ -15,15 +16,16 @@ class LoadedDataWidget extends StatelessWidget {
       children: [
         (state.character.homeworld is Planet)
             ? CardWidget(state.character.homeworld.name)
-            : SizedBox.shrink(),
+            : CardWidget(
+                'El planeta del que proviene no ha sido cargado en el modo online',
+                subtitle: state.character.homeworld,
+              ),
         (state.character.starships.length > 0)
             ? Container(
                 margin: EdgeInsets.all(12),
                 child: Text(
                   'Naves estelares',
-                  style: TextStyle(
-                    fontSize: 25,
-                  ),
+                  style: TextStyle(fontSize: 25),
                 ),
               )
             : SizedBox.shrink(),
@@ -35,8 +37,12 @@ class LoadedDataWidget extends StatelessWidget {
             if (state.character.starships[i] is Starship) {
               Starship starship = state.character.starships[i];
               return CardWidget(starship.name, subtitle: starship.model);
+            } else {
+              return CardWidget(
+                'La siguiente nave no ha sido cargado en el modo online',
+                subtitle: state.character.starships[i],
+              );
             }
-            return SizedBox.shrink();
           },
         ),
         (state.character.vehicles.length > 0)
@@ -58,13 +64,15 @@ class LoadedDataWidget extends StatelessWidget {
             if (state.character.vehicles[i] is Vehicle) {
               Vehicle vehicle = state.character.vehicles[i];
               return CardWidget(vehicle.name, subtitle: vehicle.model);
+            } else {
+              return CardWidget(
+                'El siguiente vehículo no ha sido cargado en el modo online',
+                subtitle: state.character.vehicles[i],
+              );
             }
-            return SizedBox.shrink();
           },
         ),
       ],
     );
   }
 }
-
-class Planet {}

@@ -30,7 +30,9 @@ class DatabaseRepositoryImpl extends DatabaseRepository {
       // Si es string entonces se busca en la base de datos
       if (starship is String) {
         Starship _starship = starshipsBox.get(starship);
-        _starships.add(_starship);
+        if (_starship != null) {
+          _starships.add(_starship);
+        }
       }
     });
 
@@ -46,7 +48,9 @@ class DatabaseRepositoryImpl extends DatabaseRepository {
     character.vehicles.forEach((vehicle) {
       if (vehicle is String) {
         Vehicle _vehicle = vehiclesBox.get(vehicle);
-        _vehicles.add(_vehicle);
+        if (_vehicle != null) {
+          _vehicles.add(_vehicle);
+        }
       }
     });
 
@@ -61,7 +65,9 @@ class DatabaseRepositoryImpl extends DatabaseRepository {
     // y se remplaza
     if (character.homeworld is String) {
       Planet homeworld = planetsBox.get(character.homeworld);
-      character.homeworld = homeworld;
+      if (homeworld != null) {
+        character.homeworld = homeworld;
+      }
     }
 
     return character;
